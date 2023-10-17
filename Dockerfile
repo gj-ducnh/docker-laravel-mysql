@@ -74,7 +74,7 @@ RUN rm -Rf /var/www/* && \
     mkdir -p /var/www/html
 
 # ADD src/index.php $WORKDIR/index.php
-COPY app /var/www/html
+# COPY app /var/www/html
 ADD config/php/php.ini $PHP_INI_DIR/conf.d/
 ADD config/php/opcache.ini $PHP_INI_DIR/conf.d/
 
@@ -84,8 +84,7 @@ COPY config/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN ln -s /usr/local/bin/entrypoint.sh /
 
-# ENTRYPOINT ["entrypoint.sh"]
-
+ENTRYPOINT ["entrypoint.sh"]
 
 RUN usermod -u ${HOST_UID} www-data
 RUN groupmod -g ${HOST_UID} www-data
@@ -93,9 +92,5 @@ RUN groupmod -g ${HOST_UID} www-data
 RUN chmod -R 755 $WORKDIR
 RUN chown -R www-data:www-data $WORKDIR
 
-USER ${USER}
-
-RUN composer install
-
 EXPOSE 9000
-# CMD [ "entrypoint" ]
+CMD [ "entrypoint" ]
